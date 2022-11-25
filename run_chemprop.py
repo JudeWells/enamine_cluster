@@ -24,6 +24,9 @@ if __name__=="__main__":
        'TPSA', 'QED', 'PAINS', 'BRENK', 'NIH', 'ZINC', 'LILLY', 'lead-like',
        '350/3_lead-like', 'fragments', 'strict_fragments', 'PPI_modulators',
        'natural_product-like', 'Type', 'InChiKey']
+    if 'smiles' in data.loc[0].values:
+        data = data.loc[1:]
+        data = data.reset_index(drop=True)
     args = chemprop.args.PredictArgs().parse_args(arguments)
     model_objects = chemprop.train.load_model(args=args)
     smiles_lines = data.iloc[:,0].values.reshape([len(data), 1])
@@ -33,14 +36,14 @@ if __name__=="__main__":
     if (preds == 'Invalid SMILES').any():
         preds[preds == 'Invalid SMILES'] = 100
         preds = preds.astype(float)
-    keep = np.where(preds[:,0] < -53)[0]
+    keep = np.where(preds[:,0] < -33)[0]
     results = []
     for i in keep:
         try:
             one_row = data.loc[i].to_dict()
             if one_row['PAINS']==True:
                 continue
-            if one_row['MW'] < 500 and one_row['sLogP'] < 4.5:
+            if float(one_row['MW']) < 500 and float(one_row['sLogP']) < 4.5:
                 one_row['pred'] = preds[i, 0]
                 # one_row['unc'] = unc[i,0]
                 results.append(one_row)
