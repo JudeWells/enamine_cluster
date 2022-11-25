@@ -2,6 +2,8 @@ import sys
 import numpy as np
 import chemprop
 import pandas as pd
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 smiles_file = sys.argv[1]
 index_start = sys.argv[2]
@@ -24,13 +26,16 @@ if __name__=="__main__":
        'TPSA', 'QED', 'PAINS', 'BRENK', 'NIH', 'ZINC', 'LILLY', 'lead-like',
        '350/3_lead-like', 'fragments', 'strict_fragments', 'PPI_modulators',
        'natural_product-like', 'Type', 'InChiKey']
+    if 'smiles' in data.loc[0].values:
+        data = data.loc[1:]
+        data = data.reset_index(drop=True)
     args = chemprop.args.PredictArgs().parse_args(arguments)
     model_objects = chemprop.train.load_model(args=args)
     smiles_lines = data.iloc[:,0].values.reshape([len(data), 1])
     preds = chemprop.train.make_predictions(args=args, smiles=smiles_lines, return_uncertainty=False,
                                              model_objects=model_objects)
     preds = np.array(preds)
-    if (preds == 'Invalid SMILES').any():
+    if 'Invalid SMILES' in preds:
         preds[preds == 'Invalid SMILES'] = 100
         preds = preds.astype(float)
     keep = np.where(preds[:,0] < -53)[0]
@@ -40,10 +45,10 @@ if __name__=="__main__":
             one_row = data.loc[i].to_dict()
             if one_row['PAINS']==True:
                 continue
-            if one_row['MW'] < 500 and one_row['sLogP'] < 4.5:
+            if float(one_row['MW']) < 500 and float(one_row['sLogP']) < 4.5:
                 one_row['pred'] = preds[i, 0]
                 # one_row['unc'] = unc[i,0]
                 results.append(one_row)
         except:
             pass
-    pd.DataFrame(results).to_csv(str(index_start).zfill(5)+'.csv')
+    pd.DataFrame(results).to_csv(str(index_start).zfill(5)+'.csv', index=False)
