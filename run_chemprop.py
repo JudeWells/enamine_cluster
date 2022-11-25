@@ -2,6 +2,8 @@ import sys
 import numpy as np
 import chemprop
 import pandas as pd
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
 
 smiles_file = sys.argv[1]
 index_start = sys.argv[2]
@@ -33,10 +35,10 @@ if __name__=="__main__":
     preds = chemprop.train.make_predictions(args=args, smiles=smiles_lines, return_uncertainty=False,
                                              model_objects=model_objects)
     preds = np.array(preds)
-    if (preds == 'Invalid SMILES').any():
+    if 'Invalid SMILES' in preds:
         preds[preds == 'Invalid SMILES'] = 100
         preds = preds.astype(float)
-    keep = np.where(preds[:,0] < -33)[0]
+    keep = np.where(preds[:,0] < -53)[0]
     results = []
     for i in keep:
         try:
@@ -49,4 +51,4 @@ if __name__=="__main__":
                 results.append(one_row)
         except:
             pass
-    pd.DataFrame(results).to_csv(str(index_start).zfill(5)+'.csv')
+    pd.DataFrame(results).to_csv(str(index_start).zfill(5)+'.csv', index=False)
