@@ -1,4 +1,5 @@
 import sys
+import os
 import numpy as np
 import chemprop
 import pandas as pd
@@ -7,7 +8,8 @@ warnings.simplefilter(action='ignore', category=FutureWarning)
 
 smiles_file = sys.argv[1]
 index_start = sys.argv[2]
-index_end = sys.argv[3]
+FILE=sys.argv[3]
+outdir=FILE.replace("Enamine_REAL_HAC_","").split(".")[0]
 
 arguments = [
     '--test_path', '/dev/null',
@@ -38,7 +40,7 @@ if __name__=="__main__":
     if 'Invalid SMILES' in preds:
         preds[preds == 'Invalid SMILES'] = 100
         preds = preds.astype(float)
-    keep = np.where(preds[:,0] < -53)[0]
+    keep = np.where(preds[:,0] < -50)[0]
     results = []
     for i in keep:
         try:
@@ -51,4 +53,7 @@ if __name__=="__main__":
                 results.append(one_row)
         except:
             pass
-    pd.DataFrame(results).to_csv(str(index_start).zfill(5)+'.csv', index=False)
+    if len(results):
+        os.makedirs(outdir, exist_ok=True)
+        savepath = os.path.join(outdir, str(index_start).zfill(5)+'.csv')
+        pd.DataFrame(results).to_csv(str(savepath), index=False)
