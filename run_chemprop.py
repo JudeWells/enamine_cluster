@@ -40,7 +40,7 @@ if __name__=="__main__":
     if 'Invalid SMILES' in preds:
         preds[preds == 'Invalid SMILES'] = 100
         preds = preds.astype(float)
-    keep = np.where(preds[:,0] < -50)[0]
+    keep = np.where(preds[:,0] < -49)[0]
     results = []
     for i in keep:
         try:
@@ -53,6 +53,7 @@ if __name__=="__main__":
                 results.append(one_row)
         except:
             pass
+    print('preds completed, len keep:', len(results)) 
     if len(results):
         os.makedirs(outdir, exist_ok=True)
         savepath = os.path.join(outdir, str(index_start).zfill(5)+'.csv')
