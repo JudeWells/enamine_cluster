@@ -19,6 +19,7 @@ index_start = sys.argv[2]
 FILE=sys.argv[3]
 outdir=FILE.replace("Enamine_REAL_HAC_","").split(".")[0]
 
+
 def load_agg_forest(model_path='models/saved_model.dill'):
     with open(model_path, 'rb') as f:
         model = dill.load(f)
@@ -31,8 +32,9 @@ def contains_carboxylic_acid_or_carboxylate(mol):
 def featurize_from_smiles(smiles_array):
     RADIUS = 3
     NBITS = 2048
+    DEFAULT_VALUE = np.zeros(NBITS)
     mols = [Chem.MolFromSmiles(smi[0]) for smi in smiles_array]
-    X = [np.array(AllChem.GetMorganFingerprintAsBitVect(mol, RADIUS, nBits=NBITS)) for mol in mols]
+    X = [np.array(AllChem.GetMorganFingerprintAsBitVect(mol, RADIUS, nBits=NBITS)) if mol is not None else DEFAULT_VALUE for mol in mols]
     return np.array(X), mols
 
 
