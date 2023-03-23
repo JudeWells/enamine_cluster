@@ -40,8 +40,9 @@ def featurize_from_smiles(smiles_array):
 
 
 if __name__=="__main__":
-    data = pd.read_csv(smiles_file, delimiter='\t', header=None)
-    # data = pd.read_csv('01000.csv', delimiter='\t', header=None)
+    data = pd.read_csv(smiles_file, delimiter='\t', header=None, error_bad_lines=False)
+    print(f'data shape: {data.shape}')    
+# data = pd.read_csv('01000.csv', delimiter='\t', header=None)
     data.columns = ['smiles', 'idnumber', 'reagent1', 'reagent2', 'reagent3', 'reagent4',
        'reaction', 'MW', 'HAC', 'sLogP', 'HBA', 'HBD', 'RotBonds', 'FSP3',
        'TPSA', 'QED', 'PAINS', 'BRENK', 'NIH', 'ZINC', 'LILLY', 'lead-like',
