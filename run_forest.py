@@ -34,6 +34,7 @@ def featurize_from_smiles(smiles_array):
     NBITS = 2048
     DEFAULT_VALUE = np.zeros(NBITS)
     mols = [Chem.MolFromSmiles(smi[0]) for smi in smiles_array]
+    print(f"len mols: {len(mols)}", f"not None: {len([mol for mol in mols if mol is not None])}")
     X = [np.array(AllChem.GetMorganFingerprintAsBitVect(mol, RADIUS, nBits=NBITS)) if mol is not None else DEFAULT_VALUE for mol in mols]
     return np.array(X), mols
 
