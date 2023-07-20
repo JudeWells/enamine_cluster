@@ -4,17 +4,24 @@ import numpy as np
 import chemprop
 import pandas as pd
 import warnings
+
+"""
+Script is called as follows:
+python3 run_chemprop.py smiles_file.txt $START $FILE $MODEL_DIR  $THRESHOLD
+"""
+
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 smiles_file = sys.argv[1]
 index_start = sys.argv[2]
 FILE=sys.argv[3]
+model_dir=sys.argv[4]
 outdir=FILE.replace("Enamine_REAL_HAC_","").split(".")[0]
+threshold=sys.argv[5]
 
 arguments = [
     '--test_path', '/dev/null',
     '--preds_path', '/dev/null',
-    '--checkpoint_dir', 'checkpoints/jude_mmgbsa_nov21',
     # '--uncertainty_method', 'ensemble',
     '--num_workers', '1',
     '--batch_size', '100',
@@ -22,6 +29,8 @@ arguments = [
 
 
 if __name__=="__main__":
+    arguments.append('--checkpoint_dir') # eg 'checkpoints/jude_mmgbsa_nov21',
+    arguments.append(model_dir)
     data = pd.read_csv(smiles_file, delimiter='\t', header=None)
     data.columns = ['smiles', 'idnumber', 'reagent1', 'reagent2', 'reagent3', 'reagent4',
        'reaction', 'MW', 'HAC', 'sLogP', 'HBA', 'HBD', 'RotBonds', 'FSP3',
@@ -40,7 +49,7 @@ if __name__=="__main__":
     if 'Invalid SMILES' in preds:
         preds[preds == 'Invalid SMILES'] = 100
         preds = preds.astype(float)
-    keep = np.where(preds[:,0] < -49)[0]
+    keep = np.where(preds[:,0] < threshold)[0]
     results = []
     for i in keep:
         try:

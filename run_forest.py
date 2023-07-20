@@ -57,8 +57,8 @@ if __name__=="__main__":
     X, mols = featurize_from_smiles(smiles_lines)
     model = load_agg_forest()
     preds = model.predict(X)
-    lower = 0.05
-    upper = 0.9
+    lower = 0.15
+    upper = 0.4
     keep = np.where(np.logical_and(preds[:, 0]< lower, preds[:, 1]>upper))[0]
     results = []
     for i in keep:
