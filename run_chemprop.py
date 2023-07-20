@@ -16,8 +16,9 @@ smiles_file = sys.argv[1]
 index_start = sys.argv[2]
 FILE=sys.argv[3]
 model_dir=sys.argv[4]
-outdir=FILE.replace("Enamine_REAL_HAC_","").split(".")[0]
-threshold=sys.argv[5]
+experiment_name=sys.argv[5]
+outdir=os.path.join(experiment_name, FILE.replace("Enamine_REAL_HAC_","").split(".")[0])
+threshold=float(sys.argv[5])
 
 arguments = [
     '--test_path', '/dev/null',
@@ -54,9 +55,9 @@ if __name__=="__main__":
     for i in keep:
         try:
             one_row = data.loc[i].to_dict()
-            if one_row['PAINS']==True:
+            if 'PAINS' in one_row and one_row['PAINS']==True:
                 continue
-            if float(one_row['MW']) < 500 and float(one_row['sLogP']) < 4.5:
+            if float(one_row['MW']) < 600 and float(one_row['sLogP']) < 8:
                 one_row['pred'] = preds[i, 0]
                 # one_row['unc'] = unc[i,0]
                 results.append(one_row)

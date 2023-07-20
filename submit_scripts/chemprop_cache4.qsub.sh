@@ -16,6 +16,7 @@ cd $WORKING_DIR
 FILE=${WORKING_DIR}/Enamine_REAL_HAC_22_23_402M_CXSMILES.cxsmiles
 MODEL_DIR=${WORKING_DIR}/checkpoints/cache4_log_ic50
 THRESHOLD=1.0
+EXPERIMENT_NAME=cache4_log_ic50
 
 
 
@@ -26,5 +27,5 @@ export PATH=/share/apps/python-3.8.5-shared/bin:$PATH
 export LD_LIBRARY_PATH=/share/apps/python-3.8.5-shared/lib:$LD_LIBRARY_PATH
 source /share/apps/source_files/python/python-3.8.5.source
 python3 --version
-bash predict_batch2.sh $SGE_TASK_ID $FILE $MODEL_DIR $THRESHOLD > /dev/null
+bash predict_batch.sh $SGE_TASK_ID $FILE $MODEL_DIR $THRESHOLD $EXPERIMENT_NAME > /dev/null
 date
