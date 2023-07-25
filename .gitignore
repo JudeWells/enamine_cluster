@@ -5,3 +5,4 @@ smiles_file.txt
 models/
 *.DS_Store
 .idea/*
+logs/*
