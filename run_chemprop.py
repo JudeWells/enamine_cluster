@@ -50,7 +50,7 @@ if __name__=="__main__":
     if 'Invalid SMILES' in preds:
         preds[preds == 'Invalid SMILES'] = 100
         preds = preds.astype(float)
-    keep = np.where(preds[:,0] < threshold)[0]
+    keep = np.where(preds[:,0] > threshold)[0]
     results = []
     for i in keep:
         try:
