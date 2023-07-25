@@ -14,13 +14,10 @@
 WORKING_DIR=/SAN/orengolab/nsp13/enamine_cluster
 cd $WORKING_DIR
 FILE=${WORKING_DIR}/Enamine_REAL_HAC_22_23_402M_CXSMILES.cxsmiles
-MODEL_DIR=${WORKING_DIR}/checkpoints/cache4_log_ic50
+MODEL_DIR=${WORKING_DIR}/chemprop_new_classifier_ens_2
 THRESHOLD=1.0
-EXPERIMENT_NAME=cache4_log_ic50
-
-
-
-date
+EXPERIMENT_NAME=cache4_classifier2
+echo $EXPERIMENT_NAME
 
 which conda
 conda activate cache3

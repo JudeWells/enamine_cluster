@@ -18,7 +18,7 @@ FILE=sys.argv[3]
 model_dir=sys.argv[4]
 threshold=float(sys.argv[5])
 experiment_name=sys.argv[6]
-outdir=os.path.join(experiment_name, FILE.replace("Enamine_REAL_HAC_","").split(".")[0])
+outdir=os.path.join(FILE.replace("Enamine_REAL_HAC_","").split(".")[0], experiment_name)
 print('outdir', outdir)
 arguments = [
     '--test_path', '/dev/null',

@@ -1,0 +1,38 @@
+Fold 0
+Model 0 best validation auc = 0.999572 on epoch 19
+Warning: Found a task with targets all 0s or all 1s
+Model 0 test auc = nan
+Model 0 test accuracy = nan
+Model 0 test f1 = nan
+Model 0 test mcc = nan
+Warning: Found a task with targets all 0s or all 1s
+Ensemble test auc = nan
+Ensemble test accuracy = nan
+Ensemble test f1 = nan
+Ensemble test mcc = nan
+Fold 1
+Model 0 best validation auc = 0.999699 on epoch 25
+Warning: Found a task with targets all 0s or all 1s
+Model 0 test auc = nan
+Model 0 test accuracy = nan
+Model 0 test f1 = nan
+Model 0 test mcc = nan
+Warning: Found a task with targets all 0s or all 1s
+Ensemble test auc = nan
+Ensemble test accuracy = nan
+Ensemble test f1 = nan
+Ensemble test mcc = nan
+2-fold cross validation
+	Seed 0 ==> test auc = nan
+	Seed 0 ==> test accuracy = nan
+	Seed 0 ==> test f1 = nan
+	Seed 0 ==> test mcc = nan
+	Seed 1 ==> test auc = nan
+	Seed 1 ==> test accuracy = nan
+	Seed 1 ==> test f1 = nan
+	Seed 1 ==> test mcc = nan
+Overall test auc = nan +/- nan
+Overall test accuracy = nan +/- nan
+Overall test f1 = nan +/- nan
+Overall test mcc = nan +/- nan
+Elapsed time = 3:17:45
