@@ -41,6 +41,7 @@ if __name__=="__main__":
     if 'smiles' in data.loc[0].values:
         data = data.loc[1:]
         data = data.reset_index(drop=True)
+    print(f'data shape: {data.shape}')
     args = chemprop.args.PredictArgs().parse_args(arguments)
     model_objects = chemprop.train.load_model(args=args)
     smiles_lines = data.iloc[:,0].values.reshape([len(data), 1])

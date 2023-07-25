@@ -7,7 +7,10 @@ EXPERIMENT_NAME=${5}
 echo "EXPERIMENT NAME ${EXPERIMENT_NAME}"
 START=$(($((INDEX * BATCHSIZE)) + 1))
 END=$(($START + BATCHSIZE))
-sed -n "$START,${END}p;$(($END + 1))q" $FILE > smiles_file.txt
-python run_chemprop.py smiles_file.txt $START $FILE $MODEL_DIR $THRESHOLD $EXPERIMENT_NAME
+SAMPLED_SMILES=${FILE}_${INDEX}_sampled_smiles.txt
+sed -n "$START,${END}p;$(($END + 1))q" $FILE > $SAMPLED_SMILES
+echo "N lines in SAMPLED_SMILES"
+wc -l $SAMPLED_SMILES
+python run_chemprop.py $SAMPLED_SMILES $START $FILE $MODEL_DIR $THRESHOLD $EXPERIMENT_NAME
+rm $SAMPLED_SMILES
 echo nice_jobdone
-rm REAL.o*
