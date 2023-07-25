@@ -1,5 +1,6 @@
 import sys
 import os
+from itertools import islice
 import numpy as np
 import chemprop
 import pandas as pd
@@ -28,6 +29,11 @@ arguments = [
     '--batch_size', '100',
 ]
 
+def chunks(n, iterable):
+    """Generate batches of size n from iterable"""
+    iterator = iter(iterable)
+    while True:
+        yield list(islice(iterator, n))
 
 if __name__=="__main__":
     arguments.append('--checkpoint_dir') # eg 'checkpoints/jude_mmgbsa_nov21',
@@ -44,10 +50,18 @@ if __name__=="__main__":
     print(f'data shape: {data.shape}')
     args = chemprop.args.PredictArgs().parse_args(arguments)
     model_objects = chemprop.train.load_model(args=args)
-    smiles_lines = data.iloc[:,0].values.reshape([len(data), 1])
-    preds = chemprop.train.make_predictions(args=args, smiles=smiles_lines, return_uncertainty=False,
-                                             model_objects=model_objects)
-    preds = np.array(preds)
+    all_preds = []
+
+    for batch in chunks(100, data.iloc[:, 0].values):
+        try:
+            smiles_lines = np.array(batch).reshape([len(batch), 1])
+            batch_preds = chemprop.train.make_predictions(args=args, smiles=smiles_lines, return_uncertainty=False,
+                                                          model_objects=model_objects)
+            all_preds.extend(batch_preds)
+        except Exception as e:
+            print(e)
+            continue
+    preds = np.array(all_preds)
     if 'Invalid SMILES' in preds:
         preds[preds == 'Invalid SMILES'] = 100
         preds = preds.astype(float)
