@@ -55,6 +55,8 @@ if __name__=="__main__":
     for batch in chunks(100, data.iloc[:, 0].values):
         try:
             smiles_lines = np.array(batch).reshape([len(batch), 1])
+            if len(smiles_lines) == 0:
+                break
             batch_preds = chemprop.train.make_predictions(args=args, smiles=smiles_lines, return_uncertainty=False,
                                                           model_objects=model_objects)
             all_preds.extend(batch_preds)
