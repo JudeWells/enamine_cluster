@@ -6,3 +6,4 @@ models/
 *.DS_Store
 .idea/*
 logs/*
+c4_1classifier.o*
